@@ -18,6 +18,25 @@ const carSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             required: true,
             ref: 'User',
+        },
+        status: {
+            type: String,
+            enum: ['Available', 'Sold'],
+            default: 'Available'
+        },
+        soldPrice: {
+            type: Number,
+            default: 0
+        },
+        profit: {
+            type: Number,
+            default: 0
+        },
+        saleDocumentUrl: {
+            type: String
+        },
+        purchaseDocumentUrl: {
+            type: String
         }
     },
     {

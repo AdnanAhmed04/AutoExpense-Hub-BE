@@ -109,7 +109,19 @@ const updateCar = async (req, res) => {
             return res.status(401).json({ message: 'User not authorized' });
         }
 
-        const updatedCar = await Car.findByIdAndUpdate(req.params.id, req.body, {
+        let updateData = { ...req.body };
+
+        if (updateData.status === 'Sold' || car.status === 'Sold') {
+            const expenses = await Expense.aggregate([
+                { $match: { car: car._id } },
+                { $group: { _id: null, total: { $sum: '$price' } } }
+            ]);
+            const totalInvested = expenses.length > 0 ? expenses[0].total : 0;
+            const soldPrice = Number(updateData.soldPrice !== undefined ? updateData.soldPrice : car.soldPrice) || 0;
+            updateData.profit = soldPrice - totalInvested;
+        }
+
+        const updatedCar = await Car.findByIdAndUpdate(req.params.id, updateData, {
             new: true,
         });
 
