@@ -29,7 +29,9 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // preflight for all routes
+// Note: app.use(cors()) above already answers OPTIONS preflight requests.
+// A bare app.options("*", ...) crashes under Express 5 (path-to-regexp v8),
+// so it has been removed intentionally.
 
 app.use(express.json());
 
