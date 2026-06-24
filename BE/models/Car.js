@@ -37,7 +37,13 @@ const carSchema = new mongoose.Schema(
         },
         purchaseDocumentUrl: {
             type: String
-        }
+        },
+        gallery: [
+            {
+                url: { type: String, required: true },
+                publicId: { type: String }
+            }
+        ]
     },
     {
         timestamps: true,

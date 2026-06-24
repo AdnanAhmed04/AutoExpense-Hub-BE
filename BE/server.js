@@ -32,8 +32,10 @@ const connectDB = require('./config/db');
 // Load env vars
 dotenv.config();
 
-// Connect to database
-connectDB();
+// Connect to database (log errors but keep the server running)
+connectDB().catch((error) => {
+  console.error('Initial DB connection failed:', error.message);
+});
 
 const app = express();
 
@@ -46,6 +48,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/cars', require('./routes/carRoutes'));
 app.use('/api/expenses', require('./routes/expenseSingleRoutes'));
 app.use('/api/documents', require('./routes/documentRoutes'));
+app.use('/api/gallery', require('./routes/galleryRoutes'));
 
 const PORT = process.env.PORT || 5000;
 
